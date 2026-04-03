@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+  <h2>AI Recommendations</h2>
+  <p class="text-muted">Ingresa un prompt para recibir una recomendación de película basada en IA.</p>
+
+  <form method="get" class="mb-4">
+    <div class="mb-3">
+      <label for="prompt" class="form-label">Prompt</label>
+      <input type="text" name="prompt" id="prompt" class="form-control" placeholder="Película de la segunda guerra mundial" value="{{ prompt }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+  </form>
+
+  {% if error %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endif %}
+
+  {% if recommendation %}
+  <div class="card mb-4" style="max-width: 960px;">
+    <div class="row g-0">
+      {% if recommendation.image %}
+      <div class="col-md-4">
+        <img src="{{ recommendation.image.url }}" class="img-fluid rounded-start" alt="Poster {{ recommendation.title }}">
+      </div>
+      {% endif %}
+      <div class="col">
+        <div class="card-body">
+          <h3 class="card-title">{{ recommendation.title }}</h3>
+          {% if recommendation.year %}
+            <p class="text-muted mb-1"><small>{{ recommendation.year }} {% if recommendation.genre %}| {{ recommendation.genre }}{% endif %}</small></p>
+          {% endif %}
+          <p class="card-text">{{ recommendation.description }}</p>
+          {% if recommendation.reason %}
+            <div class="alert alert-info mt-2 mb-0" role="alert">
+              <small>💡 <strong>¿Por qué esta película?</strong> {{ recommendation.reason }}</small>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% elif prompt %}
+  <div class="alert alert-secondary" role="alert">
+    No se pudo generar una recomendación con ese prompt. Intenta otro texto.
+  </div>
+  {% endif %}
+
+</div>
+
+{% endblock content %}
