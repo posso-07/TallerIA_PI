@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL">
+  <process id="Proceso_Mantenimiento" isExecutable="false">
+
+    <startEvent id="start" name="Solicitud cliente"/>
+
+    <task id="t1" name="Recibir carro y generar OT"/>
+    <task id="t2" name="Asignar mecánico"/>
+    <task id="t3" name="Diagnóstico del vehículo"/>
+    <task id="t4" name="Solicitar repuestos"/>
+
+    <exclusiveGateway id="g1" name="¿Hay repuestos?"/>
+
+    <task id="t5" name="Esperar repuestos"/>
+    <task id="t6" name="Ejecutar mantenimiento"/>
+    <task id="t7" name="Lavado del vehículo"/>
+    <task id="t8" name="Registrar trabajo terminado"/>
+
+    <endEvent id="end" name="OT completada"/>
+
+    <sequenceFlow sourceRef="start" targetRef="t1"/>
+    <sequenceFlow sourceRef="t1" targetRef="t2"/>
+    <sequenceFlow sourceRef="t2" targetRef="t3"/>
+    <sequenceFlow sourceRef="t3" targetRef="t4"/>
+    <sequenceFlow sourceRef="t4" targetRef="g1"/>
+
+    <sequenceFlow sourceRef="g1" targetRef="t6">
+      <conditionExpression>sí</conditionExpression>
+    </sequenceFlow>
+
+    <sequenceFlow sourceRef="g1" targetRef="t5">
+      <conditionExpression>no</conditionExpression>
+    </sequenceFlow>
+
+    <sequenceFlow sourceRef="t5" targetRef="t6"/>
+    <sequenceFlow sourceRef="t6" targetRef="t7"/>
+    <sequenceFlow sourceRef="t7" targetRef="t8"/>
+    <sequenceFlow sourceRef="t8" targetRef="end"/>
+
+  </process>
+</definitions>
